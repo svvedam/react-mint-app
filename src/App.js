@@ -1,38 +1,46 @@
 import React, { Component } from "react";
-import "./App.css";
-//import Budget from './components/Budget';
-//import ReactPlaid, {DEV_ENV, CONNECT_PRODUCT} from 'react-plaid';
-import Transactions from "./Transactions";
-//import ExpenditureStream from "./components/ExpenditureStream";
-//import IncomeStream from './components/IncomeStream';
-import Accounts from './components/Accounts';
+import PlaidLink from "react-plaid-link";
+import util from "./components/util";
 
-class App extends Component {
-  state = {
-    transactions: Transactions
-    //filteredTransactions : []
-  };
-
-  // filterTransactions(e){
-  //   let filteredTransactions = this.state.transactions.transactions;
-  //   filteredTransactions = filteredTransactions.filter((e) => {
-  //     return e.account_id = 'eoDgN47yyDu3EkZQRPdySEMo5yRPL5sLZMyAl';
-  //   })
-  //   this.setState({
-  //     filteredTransactions
-  //   })
-  // }
+export default class App extends Component {
+  handleOnSuccess(token, metadata) {
+    util.makeRequest({
+      parameters: {
+        token: token,
+        metadata: metadata
+      },
+      url: "https://clientwebsite.com/exchangeLinkToken/",
+      method: "POST",
+      onError: function() {},
+      onLoad: function(statusCode, responseBody) {}
+    });
+  }
+  handleOnExit(error, metadata) {
+    console.log("link: user exited");
+    console.log(error, metadata);
+  }
+  handleOnLoad() {
+    console.log("link: loaded");
+  }
+  handleOnEvent(eventname, metadata) {
+    console.log("link: user event", eventname, metadata);
+  }
   render() {
-    console.log(this.state.filteredTransactions);
     return (
-      <div className="container-fluid">
-        <React.Fragment>
-        <Accounts accounts={this.state.transactions.accounts}/>
-        
-        </React.Fragment>
-      </div>
+      <PlaidLink
+        clientName="Plaid Client"
+        env="sandbox"
+        product={["auth", "transactions"]}
+        publicKey="614be98f819e9bd8d0db9abec1c08a"
+        className="some-class-name"
+        apiVersion="v2"
+        onSuccess={this.handleOnSuccess}
+        onExit={this.handleOnExit}
+        onEvent={this.handleOnEvent}
+        onLoad={this.handleOnLoad}
+      >
+        Open Plaid Link button
+      </PlaidLink>
     );
   }
 }
-
-export default App;

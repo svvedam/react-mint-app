@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 //import TableStyle from '../css/Accounts.css';
+import {Table} from 'reactstrap';
 class Accounts extends Component {
   render() {
     // const {
@@ -13,12 +14,11 @@ class Accounts extends Component {
 
     return (
       <React.Fragment>
-        <div className="container my-5">
+        <div className="container">
           <div className="row">
-            <table className="table table-striped">
+            <Table striped>
               <thead>
                 <tr>
-                  
                   <th scope="col">Account_id</th>
                   <th scope="col">Name</th>
                   <th scope="col">Official name</th>
@@ -40,7 +40,7 @@ class Accounts extends Component {
                   );
                 })}
               </tbody>
-            </table>
+            </Table>
           </div>
         </div>
       </React.Fragment>
